@@ -76,7 +76,8 @@ export class USSDService implements IUSSDService {
     try {
       this.displayCurrentMenu();
       
-      const input = await this.getUserInput("\nEnter your choice: ");
+      const input = await this.getUserInput("\nEnter your choice: ", 30000);
+       if (!this.active) return;
       this.processCode(input);
     } catch (error) {
       console.error("Error processing menu:", error);
@@ -123,9 +124,15 @@ export class USSDService implements IUSSDService {
     }
   }
 
-  private getUserInput(prompt: string): Promise<string> {
+  private getUserInput(prompt: string, timeoutMs: number = 30000): Promise<string> {
     return new Promise((resolve) => {
+      const timer = setTimeout(() => {
+        console.log("\nSession timed out due to inactivity.");
+      this.exit();
+      resolve(""); // Optionally resolve with empty string or special value
+    }, timeoutMs);
       this.rl.question(prompt, (input) => {
+        clearTimeout(timer);
         resolve(input.trim());
       });
     });

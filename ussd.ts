@@ -54,7 +54,7 @@ export class USSDService implements IUSSDService {
   private currentMenu: IMenu;
   private mainMenu: IMenu;
   private rl: readline.Interface;
-  private active: boolean = true;
+  private active = true;
 
   constructor(mainMenu: IMenu) {
     this.mainMenu = mainMenu;
@@ -124,7 +124,7 @@ export class USSDService implements IUSSDService {
     }
   }
 
-  private getUserInput(prompt: string, timeoutMs: number = 30000): Promise<string> {
+  private getUserInput(prompt: string, timeoutMs = 30000): Promise<string> {
     return new Promise((resolve) => {
       const timer = setTimeout(() => {
         console.log("\nSession timed out due to inactivity.");

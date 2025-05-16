@@ -1,11 +1,18 @@
-import js from "@eslint/js";
-import globals from "globals";
+import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
-import { defineConfig } from "eslint/config";
 
-
-export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs,ts}"], plugins: { js }, extends: ["js/recommended"] },
-  { files: ["**/*.{js,mjs,cjs,ts}"], languageOptions: { globals: globals.browser } },
+export default tseslint.config([
+  eslint.configs.recommended,
   tseslint.configs.recommended,
+  tseslint.configs.stylistic,
+  {rules: {
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        selector: "variableLike",
+        format: ["camelCase"],
+        leadingUnderscore: "allow"
+      }
+    ]
+  }}
 ]);
